@@ -1,0 +1,15 @@
+# iShine index — runtime state
+# Copy to index.yaml and populate with your data.
+
+version: "6.1"
+last_session: "2026-01-01"
+
+projects:
+  - id: example_saas_launch
+    company: Acme Corp
+    period: "2024-01–2025-06"
+    top_metric: "Grew ARR from $0 to $2M"
+    tags: [product-launch, saas, growth, analytics]
+
+active_apps: []
+pending_actions: []

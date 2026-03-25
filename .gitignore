@@ -1,0 +1,18 @@
+# Private runtime data
+profile/
+outputs/
+meta/
+inbox/
+log/
+index.yaml
+tracker.yaml
+
+# Generated / local
+.cache/
+.venv_export/
+.DS_Store
+*.pyc
+__pycache__/
+
+# Local overrides
+.claude/settings.local.json
