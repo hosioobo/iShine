@@ -1,7 +1,7 @@
 # iShine index — runtime state
 # Copy to index.yaml and populate with your data.
 
-version: "6.1"
+version: "7.0.0"
 last_session: "2026-01-01"
 
 projects:

@@ -1,4 +1,4 @@
-# iShine v6.1
+# iShine v7.0.0
 
 ## Principles
 - profile/ = facts. FRAMING at output time. Never fabricate.
