@@ -1,3 +1,12 @@
+---
+name: ingest
+description: >
+  Inbox Processing Skill for iShine. Use this skill when the user shares new career info,
+  project updates, corrections to their profile, or application outcome results — whether
+  via a file path, pasted text, or casual message. Do NOT trigger for JD input (triggers
+  write skill) or for questions about past ingest results.
+---
+
 # Inbox Processing Skill
 
 ## Input

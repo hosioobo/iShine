@@ -1,3 +1,14 @@
+---
+name: write
+description: >
+  Resume generation skill for iShine. Use this skill whenever the user wants to create, draft,
+  or start a new resume from a job description — whether they paste a URL, paste JD text, or
+  say things like "write a resume for this", "apply to this job", "draft a resume",
+  "write resume for this JD", or "create an application". Also triggers when the user drops
+  a JD link or file path without explicit instruction. Do not wait for the user to say the
+  word "resume" — if they're sharing a job posting and seem to want to apply, this skill should run.
+---
+
 # Resume Generation Skill
 
 ## Input

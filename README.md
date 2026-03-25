@@ -25,7 +25,7 @@ Your career data stays local — nothing is sent to external servers beyond the 
 ```
 JD input → [write] strategy + draft → [validate] persona reviews → [export] PDF/DOCX
 
-Utilities:  [ingest] profile data    [humanizer] AI tone fix    [update-yourself] system tuning
+Utilities:  [ingest] profile data    [humanizer] AI tone fix    [update-preference] style tuning
 ```
 
 | Skill | What it does |
@@ -35,7 +35,7 @@ Utilities:  [ingest] profile data    [humanizer] AI tone fix    [update-yourself
 | **export** | Renders resume or cover letter as PDF / DOCX |
 | **ingest** | Adds career data, project updates, or application outcomes to your profile |
 | **humanizer** | Detects and removes AI writing patterns from any text |
-| **update-yourself** | Tunes the system based on your feedback and session history |
+| **update-preference** | Saves voice, tone, and style preferences from your session |
 
 ### Outcome tracking
 

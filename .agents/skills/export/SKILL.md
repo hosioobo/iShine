@@ -1,3 +1,15 @@
+---
+name: export
+description: >
+  Use this skill whenever the user asks to export, render, save, convert, or
+  print a resume or cover letter as PDF, HTML, or DOCX. Trigger on any of:
+  "export", "render", "save as PDF", "save as DOCX", "print resume",
+  "convert to PDF", "convert to DOCX", "save as Word", "generate PDF", or any
+  request to produce a file version of the current resume or cover letter.
+  When in doubt, trigger — it is far better to run this skill unnecessarily
+  than to miss it and leave the user without a file.
+---
+
 # Export Skill
 
 ## Input

@@ -1,7 +1,22 @@
+---
+name: validate
+description: >
+  Resume validation skill — persona review + synthesis orchestrator. Use this skill after write skill completes,
+  or whenever the user asks to validate, review, score, or improve an existing resume draft.
+  Also triggers on: "check the resume", "run validation", "review the draft", "persona review",
+  "get feedback on the resume", or any request to run the quality loop on a resume file.
+  Always invoke this skill rather than ad-hoc reviewing a resume inline.
+---
+
 # Resume Validation Skill
 
 ## Trigger
 Automatically after write skill completes, or user requests validation on an existing draft.
+
+## Codex Adapter Execution
+- Claude remains the canonical workflow owner. This adapter follows the same phase design.
+- If the user has not explicitly requested delegation or sub-agents, run Phase 2 and Phase 3 in the main context, sequentially, while preserving the same prompt isolation and file outputs.
+- Use actual sub-agents only when the user explicitly asks for delegation or parallel agent work.
 
 ## Input
 $ARGUMENTS — optional: resume file path. If omitted, find latest resume_v*.md in active application folder via index.yaml.

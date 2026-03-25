@@ -1,3 +1,14 @@
+---
+name: humanizer
+description: >
+  This skill should be used when the user asks to "humanize" text, "make this
+  sound less AI-generated", "remove AI writing patterns", "make this sound more
+  natural or human", "clean up AI-generated writing", "edit this to sound like
+  a real person wrote it", or wants to fix inflated, vague, or robotic-sounding
+  text. Works with resumes, cover letters, blog posts, news articles, and
+  marketing copy.
+---
+
 # Humanizer
 
 Remove AI writing patterns from documents and make them sound authentically human. This skill uses selective loading — it reads only the reference file relevant to the current document type, keeping its guidance focused and accurate.
@@ -37,7 +48,7 @@ Load exactly two files — no more.
 | News / editorial | `.claude/skills/humanizer/references/news-article.md` |
 | Marketing copy | `.claude/skills/humanizer/references/marketing.md` |
 
-Note: Reference files are stored in `.claude/skills/humanizer/references/` (canonical location, shared across adapters).
+Note: Claude remains canonical in this repo. Shared reference files live in `.claude/skills/humanizer/references/` and are intentionally reused by the Codex adapter.
 
 Do not load all reference files. Load only the one that matches the document type.
 

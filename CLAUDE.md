@@ -44,7 +44,8 @@ JD input
 | **validate** | Persona generation + review orchestrator: gate → personas → cold read → synthesis → v2 |
 | **ingest** | Profile data + outcome data management |
 | **export** | PDF/DOCX rendering |
-| **update-yourself** | Skill-internal tuning + system-level improvements |
+| **update-preference** | Voice/tone/style tuning → preferences.md (public) |
+| **update-engine** *(dev-only)* | Engine tuning + outcome graduation → CLAUDE.md, skills (dev only) |
 
 ### Validate Phase Details
 - **Phase 1 (gate):** Mechanical pass (XYZ, keywords, kill words, verb dedup) + gate measurement (keyword coverage, quantified evidence, Humanizer). Fix + 1 re-check if fails. No scoring loop.
@@ -73,15 +74,15 @@ When compacting, preserve: selected project IDs, gap analysis, active applicatio
 - After resume generation: append entry to meta/outcome_log.yaml.
 - On status update: ingest skill extracts patterns into meta/outcome_summary.yaml.
 - On new resume: check meta/outcome_summary.yaml for patterns from similar role families.
-- Validated outcome patterns graduate to permanent rules via /update-yourself.
-- /update-yourself can propose weight adjustments based on outcome correlations.
+- Validated outcome patterns graduate to permanent rules via /update-engine (dev-only).
+- /update-engine can propose weight adjustments based on outcome correlations.
 
 ## Process Improvement (user opinions → better iShine)
-- User runs /update-yourself to review session and propose system updates.
-- Input: user corrections, friction points, style preferences from conversation.
-- Output: targeted edits to CLAUDE.md, skills, or preferences.md (with user approval).
+- **Public users:** run /update-preference to save voice/tone/style choices → preferences.md only.
+- **Dev owner:** run /update-engine to review session and propose engine updates.
+- /update-engine input: user corrections, friction points, style preferences from conversation.
+- /update-engine output: targeted edits to CLAUDE.md, skills, or preferences.md (with user approval).
 - Two categories: (A) skill-internal tuning (weights, thresholds), (B) skill-external improvements (new skills, workflow changes).
-- Different from Outcome Tracking: input is user opinion on the process, not application results.
 
 ## Output Rules
 - Versioning: copy vN → vN+1, edit. Never rewrite from scratch.
