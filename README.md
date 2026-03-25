@@ -41,31 +41,46 @@ Utilities:  [ingest] profile data    [humanizer] AI tone fix    [update-yourself
 
 Track which resumes led to interviews. iShine logs application results and uses outcome patterns to improve future drafts — prioritizing strategies that have worked for similar roles.
 
-## Requirements
+## Getting Started
 
-- [Claude Code](https://claude.ai/claude-code) CLI (or [Codex](https://github.com/openai/codex))
-- Python 3.9+
-- Playwright for PDF export:
-  ```bash
-  pip install playwright && playwright install chromium
-  ```
+### 1. Install
 
-## Setup
+Open [Claude Code](https://claude.ai/claude-code) (or [Codex](https://github.com/openai/codex)) and say:
 
-1. Clone this repo
-2. Copy example files to create your profile:
-   ```bash
-   cp index.example.yaml index.yaml
-   mkdir -p profile/projects
-   cp profile/identity.example.md profile/identity.md
-   cp profile/projects/example_project.md profile/projects/my_project.md
-   cp preferences.example.md preferences.md
-   ```
-3. Fill in your data:
-   - `profile/identity.md` — name, contact info, career summary, education
-   - `profile/projects/*.md` — one file per role or project (metrics, skills, stories in SAR format)
-   - `preferences.md` — tone, verb choices, formatting preferences
-4. Open the repo in Claude Code and paste a job description to get started
+> "Clone https://github.com/hosioobo/iShine and set it up for me."
+
+That's it. The agent handles the rest — cloning, copying example files, and creating the folder structure.
+
+### 2. Build your profile
+
+Drop your career info into the conversation — a resume PDF, a LinkedIn export, bullet points, anything:
+
+> "Here's my background. Organize this into my profile."
+
+iShine will parse it and structure everything into the right files. You can add more anytime:
+
+> "I just finished a project where I migrated 3 services to Kubernetes and cut deploy time by 40%. Add this."
+
+### 3. Generate a resume
+
+Paste a job description URL or text:
+
+> "Write a resume for this: https://example.com/jobs/12345"
+
+iShine analyzes the JD, picks the best-fit experience from your profile, and drafts a tailored resume. Then run validation:
+
+> "Validate the draft."
+
+Three simulated reviewers (hiring manager, recruiter, functional peer) will critique it. iShine synthesizes their feedback and produces a refined v2.
+
+### 4. Export
+
+> "Export as PDF."
+
+### Requirements
+
+- [Claude Code](https://claude.ai/claude-code) or [Codex](https://github.com/openai/codex)
+- Python 3.9+ with Playwright (for PDF/DOCX export — the agent will install it if needed)
 
 ## Agent Compatibility
 
@@ -93,7 +108,7 @@ Both agents read from the same core — templates, scripts, and profile data are
 ## FAQ
 
 **Do I need to be a developer to use this?**
-No. If you can install Claude Code and run terminal commands, you can use iShine. The setup takes about 15 minutes.
+No. Everything is done through natural language. If you can install Claude Code, you can use iShine.
 
 **Does it support languages other than English?**
 Yes. iShine generates resumes natively in the target language. English and Korean templates are included.
