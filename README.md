@@ -1,6 +1,8 @@
 # iShine
 
-Paste a job description, get a tailored resume. iShine analyzes the JD, selects your best-fit experience, validates through simulated hiring reviews, and exports a polished PDF or DOCX.
+An AI career agent.
+
+*Your career, stored once. Tailored every time.*
 
 Powered by [Claude Code](https://claude.ai/claude-code). Also compatible with [Codex](https://github.com/openai/codex).
 
