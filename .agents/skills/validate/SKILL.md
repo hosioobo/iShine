@@ -19,7 +19,7 @@ Automatically after write skill completes, or user requests validation on an exi
 - Use actual sub-agents only when the user explicitly asks for delegation or parallel agent work.
 
 ## Input
-$ARGUMENTS — optional: resume file path. If omitted, find latest resume_v*.md in active application folder via index.yaml.
+$ARGUMENTS — optional: resume file path. If omitted, read tracker.yaml and use the most recent entry where status is not rejected/withdrawn/ghosted. If multiple active candidates exist, ask the user which application to target.
 
 ## Required Files
 - resume_vN.md (current draft, mechanically cleaned by write skill)
@@ -252,16 +252,28 @@ Do not filter by count. A single HM concern can be decisive; a shared minor styl
 |------|-----------|
 | **Addressable** | Fixable by resume changes — reframing, reordering, keyword addition, evidence emphasis, structural edit |
 | **Interview Prep** | Valid criticism but not expressible in resume format (XYZ) — belongs in interview preparation: failure/recovery stories, iteration narratives, judgment-under-ambiguity examples, process depth. Route to review file Q&A, not to resume edits. |
-| **Needs Your Call** | Requires a fact only the user knows, OR a strategic judgment call |
+| **Needs Your Call** | Requires a fact only the user knows, OR a strategic judgment call — but see Step 2.5 before escalating factual items |
 
 For each "Needs Your Call" item, prepare:
 - What the criticism is
 - What information or decision is needed
 - Main context's recommended approach
 
+### Step 2.5: Profile pre-resolution (factual gaps only)
+
+Before escalating any factual "Needs Your Call" item to the user, attempt resolution from profile project files:
+
+1. Identify which `profile/projects/*.md` files are most likely to contain the relevant evidence (match by project ID from strategy.md, or by role/company)
+2. Read those files and search for evidence addressing the gap
+3. If found → reclassify as **Addressable**, use the evidence, proceed
+4. If not found → keep as **Needs Your Call** and escalate to user
+
+Only escalate items that profile search genuinely cannot answer.
+Strategic judgment calls (positioning angle, gap acceptance) always go to user — profile resolution does not apply.
+
 ### Step 3: User Check (before writing v2)
 
-If any "Needs Your Call" items exist, present them to the user **now**. Do not write v2 yet.
+If any "Needs Your Call" items remain after Step 2.5, present them to the user **now**. Do not write v2 yet.
 
 ```
 Before I write v2, I need your input on [N] items:

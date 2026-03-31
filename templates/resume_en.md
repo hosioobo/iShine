@@ -87,5 +87,4 @@ version: 2.1
 
   Section order:
     Default: Summary → Core Skills → Experience → Additional → Education
-    Product roles: insert "SELECTED PRODUCT BUILDS" after Core Skills
 -->

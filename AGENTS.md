@@ -6,7 +6,7 @@
 - Generate NATIVELY in target language.
 
 ## Session Start
-- Read index.yaml FIRST (projects, active apps, pending actions).
+- Read index.yaml FIRST (projects, pending actions).
 
 ## Loading Rules
 - Prefer .cache/common_context_en.md (or _i18n.md) over individual file reads.
@@ -62,7 +62,7 @@ JD input
 
 ## Updates
 - Edit ONLY changed keys/sections. Never rewrite a whole file.
-- After profile update: (1) edit project file, (2) update index.yaml entry, (3) append changelog.
+- After profile update: (1) edit project file, (2) update index.yaml entry, (3) append changelog, (4) run `.claude/hooks/build-bundle.sh` to rebuild cache before the next resume generation.
 - Conflict detection: compare dates/roles against index.yaml before updating. Mismatch → ask user.
 - Multi-point feedback: when user provides 4+ changes in one message, number each point in the plan and confirm full coverage before proceeding.
 
@@ -97,4 +97,5 @@ When compacting, preserve: selected project IDs, gap analysis, active applicatio
 - Interview prep (notes.md): STAR format for behavioral answers.
 
 ## Session End
-- Update index.yaml: session date, summary, pending_actions, active_applications.
+- Update index.yaml: session date, summary, pending_actions.
+- If any `profile/` file was edited this session, run `.claude/hooks/build-bundle.sh --only=common` to rebuild cache.

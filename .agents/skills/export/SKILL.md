@@ -20,7 +20,7 @@ Default format: **PDF**.
 
 ### Step 1 — Identify the source file
 - If the user provided an explicit path, use it.
-- Otherwise, find the most recently modified `resume_v*.md` in the active application folder via `index.yaml`.
+- Otherwise, read tracker.yaml and use the most recent entry where status is not rejected/withdrawn/ghosted. If multiple active candidates exist, ask the user which application to target.
 - If the user said "cover letter", target `cover_letter_v*.md` instead.
 - If no matching file is found, tell the user and stop.
 
@@ -59,6 +59,7 @@ Fallback: `/opt/homebrew/bin/pandoc <input.md> -o <output.docx>` — unstyled, w
 ### Step 4 — Verify and report
 1. Confirm the output file exists. If not, show the full stderr output and stop.
 2. Check file size: PDF < 5 KB or DOCX < 2 KB almost always means a rendering failure — flag it.
+2.5. **Section check (PDF only):** Scan the source markdown for `## ` headings. Standard renderable sections: SUMMARY · CORE SKILLS · PROFESSIONAL EXPERIENCE · ADDITIONAL EXPERIENCE & LANGUAGES · EDUCATION. If any heading falls outside this list, warn before exporting: "Section [X] will be dropped from the PDF. Move its content to a standard section, or use DOCX/HTML instead."
 3. Verify obvious output issues (missing nested bullets, missing pages).
 4. Report the output path(s) to the user.
 

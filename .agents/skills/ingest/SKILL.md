@@ -47,10 +47,9 @@ Execute only the paths that match. Do not skip steps within a matched path.
 **Required for all [outcome] inputs.**
 
 7. Update `tracker.yaml`: set application status + date.
-8. Update `index.yaml` active_applications entry.
-9. Append to `meta/outcome_log.yaml`:
+8. Append to `meta/outcome_log.yaml`:
    - status, date, resume_version used, quality_score (if available from iteration_log.tsv)
-10. Pattern extraction: scan outcome_log.yaml for recurring patterns.
+9. Pattern extraction: scan outcome_log.yaml for recurring patterns.
     - If 3+ outcomes share a trait → append pattern to `meta/outcome_summary.yaml`
     - Patterns include: score thresholds, keyword coverage, role_family trends, positioning angles
 

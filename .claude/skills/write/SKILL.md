@@ -120,6 +120,8 @@ Do not full-read projects used only for secondary or supporting bullets — fron
 
 Follow the template structure from `common_context_en.md`.
 
+**ADDITIONAL EXPERIENCE & LANGUAGES:** Populate only from entries explicitly present in `common_context_en.md` (military, publications, personal projects). If a template placeholder line has no matching data in the bundle, omit the line entirely. Do not infer or fill from general knowledge.
+
 **Bullet format: result-first XYZ**
 Lead every bullet with the outcome [X] and metric [Y], then the method [Z].
 
@@ -193,7 +195,6 @@ Save to `outputs/applications/{YYYYMMDD}_{company}_{role}/`:
 ### 11. Update tracking
 
 - Update `tracker.yaml` with new application entry
-- Update `index.yaml` `active_apps`
 
 ---
 
