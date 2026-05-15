@@ -1,5 +1,7 @@
 # iShine
 
+[한국어](README.ko.md)
+
 An AI career agent.
 
 *Your career, stored once. Tailored every time.*
