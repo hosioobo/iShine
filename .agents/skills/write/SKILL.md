@@ -27,8 +27,9 @@ Save as `jd.md` with two labeled blocks:
 
 ```
 ## Summary
-role · company · type (contract/FTE) · salary · location · work-auth
+url · role · company · type (contract/FTE) · salary · location · work-auth
 company 1-liner: stage/industry/product
+brand_color: hex color + source used for PDF theme
 must-have qualifications + hard requirements
 priority keywords (top 7, ordered by emphasis in JD)
 responsibilities (bullets)
@@ -42,6 +43,12 @@ nice-to-haves (if distinguishable from must-haves)
 
 Create the application folder at this step if it doesn't exist yet:
 `outputs/applications/{YYYYMMDD}_{company}_{role}/`
+
+When parsing a URL, also identify the company's key brand color for PDF theming:
+- Prefer the official company site over the job board.
+- Prefer a logo SVG fill, documented brand token, or primary CTA color over incidental page colors.
+- Save `brand_color` in `jd.md` as `#RRGGBB (source: ...)`.
+- If no reliable color is available, save `brand_color: null` and use the default export theme.
 
 ---
 
@@ -134,6 +141,17 @@ The reason this matters: recruiters and hiring managers scan for impact before m
 
 Apply voice and style rules from `preferences.md`.
 
+**Stanford-informed structure rules:**
+- Use section order: Summary → Professional Experience → Core Skills → Education → Additional.
+- Do not create `SELECTED PRODUCT BUILDS`, `Product Builds`, or similar showcase sections.
+- Integrate product-build examples into the relevant role under Professional Experience.
+- Keep the masthead plain: no banner-like tagline and no stacked buzzword domains unless the JD explicitly centers them.
+- Default tagline is the target role title only (for example, `Product Manager`).
+- Include LinkedIn and GitHub together when both are available; renderer displays them as SVG icon + handle links without `@`.
+- Company descriptions are optional. Prefer no parenthetical; add short factual context only when it clarifies an unfamiliar company or the JD values that context.
+- Earlier/lower-priority roles may be compact one-line entries with no bullets to show continuity without spending space.
+- Target 1 page when possible; 2 pages maximum.
+
 ---
 
 ### 8. Mechanical pass (1–2 rounds, batch fixes)
@@ -158,13 +176,18 @@ Run all checks in a single pass per round. Do not fix one item at a time.
 
 **Preference expression (Phase 1 items from preferences.md):**
 - Drop "I" pronouns from summary and bullets; use implied subject
-- Summary: ≤60 words, 3–4 sentences
+- Summary: ≤60 words, 2–3 sentences
+- Keep the tagline plain; avoid stacked AI/behavioral-science/learning-experience banner language unless JD-critical
 - Remove commodity tools from Tools line: Google Sheets, Looker Studio, Slack, Notion
 - Word substitution: grow/grew → scale/scaled (team/org context); strengthen/strengthened → improve/improved
 - Consulting prefix: `**Consulting (Client):**` for external client projects
 - Language display: apply `preferences.md` policy for the resume output language; remove policy-excluded languages and delete the Languages/언어 능력 line when empty
 
 **Structure:**
+- Professional Experience appears before Core Skills.
+- Core Skills appears immediately after Professional Experience.
+- No standalone Selected Product Builds section; product builds belong inside the role where they happened.
+- Earlier/lower-priority roles may be one-line entries with no bullets when needed for length and continuity.
 - Strongest JD-relevant bullet leads each role section. For PM roles: lead with analytical/product-building bullets (decision-making, system design, data product) over operational/scale/founder-context bullets — company description already establishes founder context, so role bullets should demonstrate PM capability.
 - Tools line: ordered by role relevance, most distinctive first
 - Summary closing: last sentence in candidate voice — state what you built/did, not how you match the company. See preferences.md.
