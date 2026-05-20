@@ -39,6 +39,11 @@ Default format: **PDF**.
 python3 scripts/export_resume_web_pdf.py <input.md> <output.html> --pdf <output.pdf>
 ```
 Requires Google Chrome. Produces both HTML and PDF in one step.
+If the application folder has `jd.md` with `brand_color: #RRGGBB`, pass it through:
+```
+python3 scripts/export_resume_web_pdf.py <input.md> <output.html> --pdf <output.pdf> --theme "#RRGGBB"
+```
+Use the default theme only when `brand_color` is missing or null.
 
 Fallback (no Chrome):
 ```
@@ -59,7 +64,7 @@ Fallback: `/opt/homebrew/bin/pandoc <input.md> -o <output.docx>` — unstyled, w
 ### Step 4 — Verify and report
 1. Confirm the output file exists. If not, show the full stderr output and stop.
 2. Check file size: PDF < 5 KB or DOCX < 2 KB almost always means a rendering failure — flag it.
-2.5. **Section check (PDF only):** Scan the source markdown for `## ` headings. Standard renderable sections: SUMMARY · CORE SKILLS · PROFESSIONAL EXPERIENCE · ADDITIONAL EXPERIENCE & LANGUAGES · EDUCATION. If any heading falls outside this list, warn before exporting: "Section [X] will be dropped from the PDF. Move its content to a standard section, or use DOCX/HTML instead."
+2.5. **Section check (PDF only):** Scan the source markdown for `## ` headings. Standard renderable sections: SUMMARY · PROFESSIONAL EXPERIENCE · CORE SKILLS · EDUCATION · ADDITIONAL EXPERIENCE & LANGUAGES. If any heading falls outside this list, warn before exporting: "Section [X] will be dropped from the PDF. Move its content to a standard section, or use DOCX/HTML instead."
 3. Verify obvious output issues (missing nested bullets, missing pages).
 4. Report the output path(s) to the user.
 

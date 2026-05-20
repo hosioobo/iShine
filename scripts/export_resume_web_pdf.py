@@ -22,6 +22,34 @@ CHROME_CANDIDATES = [
     Path("/Applications/Chromium.app/Contents/MacOS/Chromium"),
 ]
 
+CONTACT_ICONS = {
+    "github": (
+        "M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 "
+        "11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-"
+        "1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.087-.744.084-.729."
+        "084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.835 2.809 1.305 "
+        "3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 "
+        "0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 "
+        "1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 "
+        "3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 "
+        "3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 "
+        "5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 "
+        "0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-"
+        "5.373-12-12-12"
+    ),
+    "linkedin": (
+        "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-"
+        "1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046"
+        "c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 "
+        "5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 "
+        "0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 "
+        "2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564"
+        "v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 "
+        "23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 "
+        "22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+    ),
+}
+
 
 @dataclass
 class ExperienceEntry:
@@ -53,17 +81,23 @@ class ResumeData:
 def inline_html(text: str) -> str:
     placeholders: dict[str, str] = {}
 
-    def stash(match: re.Match[str]) -> str:
+    def stash_anchor(label: str, url: str) -> str:
         token = f"__URL_{len(placeholders)}__"
-        url = match.group(0)
         href = url if "://" in url else f"https://{url}"
         placeholders[token] = (
-            f'<a href="{html.escape(href, quote=True)}">{html.escape(url)}</a>'
+            f'<a href="{html.escape(href, quote=True)}">{html.escape(label)}</a>'
         )
         return token
 
-    url_pattern = re.compile(r"(https?://[^\s]+|linkedin\.com/[^\s]+)")
-    text = url_pattern.sub(stash, text)
+    markdown_link_pattern = re.compile(
+        r"\[([^\]]+)\]\((https?://[^\s)]+|(?:linkedin|github)\.com/[^\s)]+)\)"
+    )
+    text = markdown_link_pattern.sub(
+        lambda match: stash_anchor(match.group(1), match.group(2)), text
+    )
+
+    url_pattern = re.compile(r"(https?://[^\s]+|linkedin\.com/[^\s]+|github\.com/[^\s]+)")
+    text = url_pattern.sub(lambda match: stash_anchor(match.group(0), match.group(0)), text)
     escaped = html.escape(text)
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
     escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
@@ -116,6 +150,26 @@ def parse_company_line(line: str) -> tuple[str, str, str]:
     if remainder.startswith("·"):
         remainder = remainder[1:].strip()
     return company, context, remainder
+
+
+def parse_experience_heading(heading: str) -> tuple[str, str, str, str]:
+    """Parse headings that inline role, bold company, and dates.
+
+    Standard entries keep company/dates on the following line, but compact
+    entries sometimes use: `Role · **Company** · Dates`.
+    """
+    match = re.match(
+        r"^(?P<role>.+?)\s+·\s+\*\*(?P<company>.+?)\*\*\s+·\s+(?P<dates>.+)$",
+        heading,
+    )
+    if not match:
+        return heading, "", "", ""
+    return (
+        match.group("role").strip(),
+        match.group("company").strip(),
+        "",
+        match.group("dates").strip(),
+    )
 
 
 def parse_resume(md_path: Path) -> ResumeData:
@@ -175,10 +229,12 @@ def parse_resume(md_path: Path) -> ResumeData:
         for paragraph in split_blocks(sections.get("SUMMARY", []))
         if any(chunk.strip() for chunk in paragraph)
     ]
+    # Core skill rows are visually meaningful in the source markdown.
+    # Preserve each non-empty line instead of paragraph-joining the section.
     core_skills = [
-        " ".join(chunk.strip() for chunk in paragraph if chunk.strip())
-        for paragraph in split_blocks(sections.get("CORE SKILLS", []))
-        if any(chunk.strip() for chunk in paragraph)
+        line.strip()
+        for line in sections.get("CORE SKILLS", [])
+        if line.strip()
     ]
     experience = parse_experience(sections.get("PROFESSIONAL EXPERIENCE", []))
     education = split_blocks(sections.get("EDUCATION", []))
@@ -226,11 +282,12 @@ def parse_experience(lines: list[str]) -> list[ExperienceEntry]:
         if stripped.startswith("### "):
             if current:
                 entries.append(current)
+            role, company, context, dates = parse_experience_heading(stripped[4:].strip())
             current = ExperienceEntry(
-                role=stripped[4:].strip(),
-                company="",
-                context="",
-                dates="",
+                role=role,
+                company=company,
+                context=context,
+                dates=dates,
             )
             bullet_stack = []
             continue
@@ -282,6 +339,8 @@ def render_contacts(contacts: list[str]) -> str:
             return (1, lowered)
         if "linkedin.com/" in lowered:
             return (3, lowered)
+        if "github.com/" in lowered:
+            return (4, lowered)
         return (2, lowered)
 
     rendered = []
@@ -293,10 +352,25 @@ def render_contacts(contacts: list[str]) -> str:
         elif item.startswith("linkedin.com/"):
             safe = (
                 f'<a href="https://{html.escape(item, quote=True)}">'
-                f"{html.escape(item)}</a>"
+                f'{render_contact_handle("linkedin", item.rsplit("/", 1)[-1])}</a>'
+            )
+        elif item.startswith("github.com/"):
+            safe = (
+                f'<a href="https://{html.escape(item, quote=True)}">'
+                f'{render_contact_handle("github", item.rsplit("/", 1)[-1])}</a>'
             )
         rendered.append(f'<li class="contact-item">{safe}</li>')
     return "\n".join(rendered)
+
+
+def render_contact_handle(icon: str, handle: str) -> str:
+    path = CONTACT_ICONS[icon]
+    return (
+        '<svg class="contact-icon" role="img" aria-hidden="true" '
+        'viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
+        f'<path d="{html.escape(path, quote=True)}"></path></svg>'
+        f'<span>{html.escape(handle)}</span>'
+    )
 
 
 def render_labeled_blocks(blocks: list[list[str]]) -> str:
@@ -336,7 +410,7 @@ def render_labeled_blocks(blocks: list[list[str]]) -> str:
     return "\n".join(rendered)
 
 
-def render_html(data: ResumeData) -> str:
+def render_html(data: ResumeData, theme: str = "#8c1515") -> str:
     header_summary_html = "\n".join(
         f'<p class="header-summary">{inline_html(paragraph)}</p>' for paragraph in data.summary
     )
@@ -353,15 +427,13 @@ def render_html(data: ResumeData) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{html.escape(data.name)} Resume</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {{
       --ink: #0a0a0a;
       --muted: #4a4a4a;
       --rule: #bdbdbd;
       --paper: #ffffff;
+      --theme: {theme};
     }}
 
     @page {{
@@ -382,10 +454,10 @@ def render_html(data: ResumeData) -> str:
       margin: 0;
       color: var(--ink);
       background: var(--paper);
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
       font-size: 10pt;
       line-height: 1.4;
-      text-rendering: geometricPrecision;
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
     }}
 
@@ -406,22 +478,20 @@ def render_html(data: ResumeData) -> str:
     }}
 
     .name {{
-      font-size: 22pt;
+      font-size: 24pt;
       font-weight: 600;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
       line-height: 1.02;
-      text-transform: uppercase;
+      color: var(--theme);
       margin-bottom: 0.06in;
     }}
 
     .tagline {{
-      font-size: 10pt;
-      font-weight: 300;
-      letter-spacing: 0.01em;
+      font-size: 12pt;
+      letter-spacing: 0;
       line-height: 1.25;
-      text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 0.14in;
+      margin-bottom: 0.1in;
     }}
 
     .header-summary {{
@@ -431,9 +501,9 @@ def render_html(data: ResumeData) -> str:
     }}
 
     .contact-bar {{
-      margin-top: 0.12in;
-      margin-bottom: 0.22in;
-      padding: 0.1in 0;
+      margin-top: 0.1in;
+      margin-bottom: 0.17in;
+      padding: 0.08in 0;
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
     }}
@@ -460,10 +530,21 @@ def render_html(data: ResumeData) -> str:
     .contact-item a {{
       color: inherit;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }}
+
+    .contact-icon {{
+      width: 0.13in;
+      height: 0.13in;
+      margin-right: 0.035in;
+      fill: currentColor;
+      flex: 0 0 auto;
+      display: block;
     }}
 
     section {{
-      margin-top: 0.28in;
+      margin-top: 0.24in;
     }}
 
     section:first-of-type {{
@@ -473,8 +554,8 @@ def render_html(data: ResumeData) -> str:
     .section-header {{
       display: block;
       border-top: 1px solid var(--rule);
-      padding-top: 0.18in;
-      margin-bottom: 0.1in;
+      padding-top: 0.1in;
+      margin-bottom: 0.2in;
       break-after: avoid;
     }}
 
@@ -486,11 +567,11 @@ def render_html(data: ResumeData) -> str:
     .section-label {{
       display: block;
       font-size: 12pt;
-      font-weight: 500;
-      letter-spacing: 0.01em;
+      font-weight: 600;
+      letter-spacing: 0;
       text-transform: uppercase;
       line-height: 1.2;
-      color: var(--muted);
+      color: var(--theme);
     }}
 
     .section-rule {{
@@ -513,32 +594,65 @@ def render_html(data: ResumeData) -> str:
     }}
 
     .experience-item {{
+      break-inside: auto;
+    }}
+
+    .experience-heading {{
       break-inside: avoid;
+      break-after: avoid;
+    }}
+
+    .experience-heading + .bullets {{
+      break-before: avoid;
     }}
 
     .experience-item + .experience-item {{
       margin-top: 0.18in;
     }}
 
+    .experience-item.compact {{
+      break-inside: avoid;
+    }}
+
+    .experience-item.compact .experience-heading {{
+      display: flex;
+      align-items: baseline;
+      gap: 0.08in;
+    }}
+
+    .experience-item.compact + .experience-item.compact {{
+      margin-top: 0.08in;
+    }}
+
     .role {{
       display: block;
-      font-size: 11pt;
+      font-size: 12pt;
       font-weight: 700;
       letter-spacing: 0;
       line-height: 1.2;
       margin-bottom: 0.02in;
     }}
 
+    .experience-item.compact .role {{
+      flex: 0 0 auto;
+      font-size: 10pt;
+      margin-bottom: 0;
+    }}
+
     .meta-row {{
-      font-size: 9pt;
+      font-size: 10pt;
       color: var(--muted);
       margin-bottom: 0.04in;
       line-height: 1.3;
       text-wrap: pretty;
     }}
 
+    .experience-item.compact .meta-row {{
+      margin-bottom: 0;
+    }}
+
     .company {{
-      font-style: italic;
+      font-style: normal;
     }}
 
     .context {{
@@ -552,7 +666,14 @@ def render_html(data: ResumeData) -> str:
     }}
 
     .bullets li {{
-      line-height: 1.28;
+      line-height: 1.5;
+      text-wrap: pretty;
+    }}
+
+    .compact-body {{
+      font-size: 10pt;
+      line-height: 1.5;
+      margin: 0.05in 0 0;
       text-wrap: pretty;
     }}
 
@@ -611,7 +732,7 @@ def render_html(data: ResumeData) -> str:
     }}
 
     em {{
-      font-style: italic;
+      font-style: normal;
     }}
 
     a {{
@@ -635,13 +756,13 @@ def render_html(data: ResumeData) -> str:
     </div>
 
     <section>
-      {section_heading("Core Skills")}
-      {skills_html}
+      {section_heading("Professional Experience")}
+      {experience_html}
     </section>
 
     <section>
-      {section_heading("Professional Experience")}
-      {experience_html}
+      {section_heading("Core Skills")}
+      {skills_html}
     </section>
 
     <section>
@@ -653,6 +774,7 @@ def render_html(data: ResumeData) -> str:
       {section_heading("Additional Experience & Languages")}
       {additional_html}
     </section>
+
   </main>
 </body>
 </html>
@@ -661,17 +783,34 @@ def render_html(data: ResumeData) -> str:
 
 def render_experience(entry: ExperienceEntry) -> str:
     meta_bits = [f'<span class="company">{inline_html(entry.company)}</span>']
-    if entry.context:
+    inline_context = entry.context if entry.context and len(entry.context) <= 80 else None
+    block_context = entry.context if entry.context and len(entry.context) > 80 else None
+    if inline_context:
         meta_bits.append(
-            f'<span class="context">({inline_html(entry.context)})</span>'
+            f'<span class="context">({inline_html(inline_context)})</span>'
         )
     if entry.dates:
         meta_bits.append(f'<span class="context">· {html.escape(entry.dates)}</span>')
     meta_html = " ".join(meta_bits)
+
+    if not entry.bullets:
+        body_html = f'<p class="compact-body">{inline_html(block_context)}</p>' if block_context else ""
+        return f"""
+      <article class="experience-item compact">
+        <div class="experience-heading">
+          <h3 class="role">{html.escape(entry.role)}</h3>
+          <div class="meta-row">{meta_html}</div>
+        </div>
+        {body_html}
+      </article>
+    """
+
     return f"""
       <article class="experience-item">
-        <h3 class="role">{html.escape(entry.role)}</h3>
-        <div class="meta-row">{meta_html}</div>
+        <div class="experience-heading">
+          <h3 class="role">{html.escape(entry.role)}</h3>
+          <div class="meta-row">{meta_html}</div>
+        </div>
         {render_bullets(entry.bullets)}
       </article>
     """
@@ -723,6 +862,7 @@ def main() -> None:
     parser.add_argument("output_html", help="Path to output HTML")
     parser.add_argument("--pdf", dest="output_pdf", help="Optional PDF output path")
     parser.add_argument("--chrome", dest="chrome_path", help="Optional path to Chrome binary")
+    parser.add_argument("--theme", dest="theme_color", default="#8c1515", help="CSS accent color (hex)")
     args = parser.parse_args()
 
     input_md = Path(args.input_md).expanduser()
@@ -731,7 +871,7 @@ def main() -> None:
 
     try:
         data = parse_resume(input_md)
-        output_html.write_text(render_html(data), encoding="utf-8")
+        output_html.write_text(render_html(data, theme=args.theme_color), encoding="utf-8")
         if args.output_pdf:
             chrome_path = find_chrome(args.chrome_path)
             export_pdf(output_html, Path(args.output_pdf).expanduser(), chrome_path)
