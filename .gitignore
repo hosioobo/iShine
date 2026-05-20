@@ -9,7 +9,13 @@ tracker.yaml
 
 # Generated / local
 .cache/
+.omx/
 .venv_export/
+ops/data/discovery-runs/
+ops/data/batch-runs/
+ops/data/tracked-runs/
+ops/data/discoveries/
+ops/reports/
 .DS_Store
 *.pyc
 __pycache__/

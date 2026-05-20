@@ -80,8 +80,8 @@ When compacting, preserve: selected project IDs, gap analysis, active applicatio
 - After resume generation: append entry to meta/outcome_log.yaml.
 - On status update: ingest skill extracts patterns into meta/outcome_summary.yaml.
 - On new resume: check meta/outcome_summary.yaml for patterns from similar role families.
-- Validated outcome patterns graduate to permanent rules via /update-yourself.
-- /update-yourself can propose weight adjustments based on outcome correlations.
+- Validated outcome patterns graduate to permanent rules via /update-engine.
+- /update-engine can propose weight adjustments based on outcome correlations.
 
 ## Process Improvement (user opinions → better iShine)
 - **Public users:** run /update-preference to save voice/tone/style choices → preferences.md only.
