@@ -30,7 +30,7 @@ version: 1.0
 
 **기술 역량:** [skill1, skill2, skill3]
 **도구/플랫폼:** [tool1, tool2, tool3]
-**언어 능력:** [language1 (수준), language2 (수준)]
+**언어 능력:** [profile 기반 언어, preferences.md `output_language: ko` 정책대로 표시. 표시할 언어가 없으면 줄 삭제.]
 
 ## 자격증
 

@@ -67,7 +67,7 @@ version: 2.1
 **[Category, e.g. Publication]** — *[Title]* ([Publisher])
 [One-line description.]
 
-**Languages:** [Language] (Native) · [Language] (Fluent)
+**Languages:** [Profile-derived languages, rendered per preferences.md `output_language: en` policy]
 
 ---
 <!-- NOTES FOR GENERATION:
@@ -82,7 +82,10 @@ version: 2.1
     include context the JD values (stage, industry, scale, geography)
   - Degree format: "B.A. in [Field]" — not BBA, not "Bachelor of..."
   - English resumes: omit work authorization / visa status section
-  - English resumes: omit "English" from Languages (assumed for US jobs)
+  - Languages: derive only from profile facts; never invent or default languages.
+    Apply preferences.md language display policy for `output_language: en`.
+    If policy leaves no displayable languages, omit the Languages line.
+    If the JD explicitly requires a policy-excluded language, include only when profile-supported and record the override in strategy.md.
   - Omit Certifications section if none exist
 
   Section order:

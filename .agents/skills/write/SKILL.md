@@ -122,6 +122,8 @@ Follow the template structure from `common_context_en.md`.
 
 **ADDITIONAL EXPERIENCE & LANGUAGES:** Populate only from entries explicitly present in `common_context_en.md` (military, publications, personal projects). If a template placeholder line has no matching data in the bundle, omit the line entirely. Do not infer or fill from general knowledge.
 
+**LANGUAGES:** Derive only from profile language facts in `common_context_*`. Apply `preferences.md` language display policy by output language (`en`, `ko`): omit policy-excluded languages, include only profile-supported languages, and delete the Languages/언어 능력 line if no language remains. Do not invent default languages. If the JD explicitly requires a language that policy would omit, include it only when profile-supported and record the override in `strategy.md`.
+
 **Bullet format: result-first XYZ**
 Lead every bullet with the outcome [X] and metric [Y], then the method [Z].
 
@@ -160,6 +162,7 @@ Run all checks in a single pass per round. Do not fix one item at a time.
 - Remove commodity tools from Tools line: Google Sheets, Looker Studio, Slack, Notion
 - Word substitution: grow/grew → scale/scaled (team/org context); strengthen/strengthened → improve/improved
 - Consulting prefix: `**Consulting (Client):**` for external client projects
+- Language display: apply `preferences.md` policy for the resume output language; remove policy-excluded languages and delete the Languages/언어 능력 line when empty
 
 **Structure:**
 - Strongest JD-relevant bullet leads each role section. For PM roles: lead with analytical/product-building bullets (decision-making, system design, data product) over operational/scale/founder-context bullets — company description already establishes founder context, so role bullets should demonstrate PM capability.

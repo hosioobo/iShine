@@ -88,6 +88,7 @@ When compacting, preserve: selected project IDs, gap analysis, active applicatio
 - Versioning: copy vN → vN+1, edit. Never rewrite from scratch.
 - Statuses: applied | screen | interview | offer | rejected | withdrawn | ghosted
 - Resume bullets: XYZ format at output time. Profile stores raw facts.
+- Languages: profile facts stay in profile; resume output applies `preferences.md` language display policy by output language (`en`, `ko`). Never invent/default languages. JD-required overrides must be profile-supported and noted in `strategy.md`.
 - Interview prep (notes.md): STAR format for behavioral answers.
 
 ## Session End

@@ -63,20 +63,23 @@ Batch fixes per round:
 - **Redundant phrasing**: remove "in order to", "was able to", "responsible for"
 - **-ing filler**: "Focusing on X, achieved Y" → "Achieved Y by X"
 - **Verb deduplication**: no verb appears 3+ times as a bullet opener
+- **Language display policy**: any Languages/언어 능력 line must derive only from profile facts and match `preferences.md` for the resume output language (`en`, `ko`). Remove policy-excluded languages, delete the line if empty, and only override for JD-required languages when profile-supported and documented in `strategy.md`.
 
 Stop after 2 rounds, or when 0 violations found.
 
 ### Part B: Gate Measurement
 
-After the pass, measure three gates:
+After the pass, measure four gates:
 
 | Gate | Measurement | Threshold |
 |------|-------------|-----------|
 | JD keyword coverage | matched / top-15 | < 60% → flag |
 | Quantified evidence | quantified bullets / total bullets | < 60% → flag |
 | Humanizer compliance | count violations | ≥ 3 → FAIL |
+| Language display policy | profile facts + preferences.md output-language policy | mismatch → FAIL |
 
 - Humanizer FAIL: apply one targeted fix → re-measure once. If still ≥ 3, stop and report to user. Do not proceed.
+- Language policy FAIL: fix before persona review. Do not proceed with Languages/언어 능력 content that includes non-profile or policy-excluded languages.
 - Keyword or evidence below threshold: note as risk, proceed. Personas will surface this.
 
 ---
