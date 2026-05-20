@@ -8,7 +8,7 @@ The DOCX must follow the same rendering order as the HTML/PDF export:
 
 1. **Masthead block (no heading):** Name → Tagline → Summary paragraph
 2. **Contact bar** (horizontal rule above and below)
-3. **Sections with headings:** Core Skills → Professional Experience → Education → Additional
+3. **Sections with headings:** Professional Experience → Core Skills → Education → Additional
 
 The `## SUMMARY` heading from the markdown is **not rendered** — its content becomes the masthead paragraph.
 
@@ -18,26 +18,30 @@ The `## SUMMARY` heading from the markdown is **not rendered** — its content b
 
 ## Font
 
-- Primary: Inter (fallback: Arial, then system sans-serif)
-- Install Inter if available; degrade gracefully to Arial
+- Primary: Arial (fallback: Helvetica, then system sans-serif)
+- Use a plain, accessible sans-serif. Do not require a web font to render correctly.
 
 ## Colors
 
+- Theme (Stanford Cardinal Red): `#8c1515`
 - Ink (body text): `#0a0a0a`
 - Muted (tagline, contacts, dates, section headings): `#4a4a4a`
-- Rule (divider lines): `#bdbdbd`
+- Rule (divider lines): neutral rule color
 - No blue anywhere
 
 ## Typography
 
-- **Name:** 22pt, semibold (600 equivalent), uppercase, color ink
-- **Tagline:** 10pt, light weight, uppercase, color muted
+- **Name:** 24pt, semibold (600 equivalent), title case, theme color, no letter spacing
+- **Tagline:** 12pt, default weight, sentence/title case, color muted, no letter spacing. Usually role title only.
 - **Summary:** 10pt, color ink, no section heading
 - **Contact line:** 9pt, color muted, items joined with ` · `, horizontal rules above/below
-- **Section headers:** 12pt, medium weight, uppercase, color muted, `space_before=8pt`, `space_after=3pt`, thin rule above
-- **Role title:** 11pt, bold, color ink, `space_before=6pt`
-- **Company + date line:** 9pt, color muted, company name italic, one line joined with ` · `
-- **Body/bullets:** 10pt, color ink
+- **LinkedIn/GitHub:** display SVG icon + handle (`coreshift`, `hosioobo`) while preserving live links; no `@`; icon color matches handle text and is vertically centered
+- **Section headers:** 12pt, semibold (600 equivalent), uppercase, theme color label, `space_before=8pt`, `space_after=6pt`, thin neutral rule above
+- **Role title:** 12pt, bold, color ink, `space_before=6pt`
+- **Company + date line:** 10pt, color muted, company name not italic, one line joined with ` · `
+- **Compact earlier roles:** role title + company/date on one line where possible, no bullets
+- **Pagination:** experience entries may split across pages to avoid large blank gaps; keep the role title + company/date heading with the first bullet where possible
+- **Body/bullets:** 10pt, color ink, bullet line-height equivalent 1.5
 - **Bullet indent:** left 0.375in, first line -0.1875in (hanging)
 - **Bullet char:** `•  `
 - **Skills labels:** semibold (600 equivalent) + normal content run, `space_after=2pt`
@@ -45,6 +49,7 @@ The `## SUMMARY` heading from the markdown is **not rendered** — its content b
 ## Inline Formatting
 
 - Inline bold from markdown `**text**` maps to bold run at same size
+- Inline italics from markdown `*text*` renders as normal text
 - No horizontal rules within body (only contact bar rules)
 
 ## Output Naming
